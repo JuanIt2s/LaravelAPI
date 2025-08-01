@@ -1,6 +1,7 @@
 <template>
   <Boton msg="Llamar a API" @funcion_btn="llamarApi" />
   <Boton msg="Listar" @funcion_btn="() => {mostrar = !mostrar; numRandom = Math.floor(Math.random() * 20);}" />
+  <Boton msg="Guardar" @funcion_btn="GuardarDatos"/>
   <section>
     <article class="p-2" v-if="mostrar">
       <h1>Datos de API</h1>
@@ -33,6 +34,19 @@ const llamarApi = async () => {
   datos.value = await apiContext.api('https://rickandmortyapi.com/api/character', 'GET');
   console.log(datos.value.results);
 }
+
+const GuardarDatos = async () => {
+  const personaje = datos.value.results[numRandom.value];
+
+  const respuesta = await apiContext.api(
+      'http://localhost:8000/api/personajes',
+      'POST',
+      personaje
+  );
+
+  console.log("Respuesta del backend:", respuesta);
+}
+
 
 
 </script>
